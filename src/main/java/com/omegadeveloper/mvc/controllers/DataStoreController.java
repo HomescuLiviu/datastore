@@ -1,14 +1,13 @@
 package com.omegadeveloper.mvc.controllers;
 
 
+import com.omegadeveloper.entity.DatastoreEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by liviu on 2/23/2016.
@@ -35,4 +34,15 @@ public class DataStoreController {
         return "datastore";
     }
 
+
+    @RequestMapping(value="{name}", method = RequestMethod.GET)
+    public @ResponseBody DatastoreEntity getEntityJson(@PathVariable String name) {
+
+        DatastoreEntity entity = new DatastoreEntity();
+        entity.setId("123");
+        entity.setDataAsJson("{\"id\":\"1234\"}");
+
+        return entity;
+
+    }
 }
