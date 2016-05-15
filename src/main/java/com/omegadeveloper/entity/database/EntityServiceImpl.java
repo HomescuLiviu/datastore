@@ -6,25 +6,36 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.omegadeveloper.entity.DatastoreEntity;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class EntityServiceImpl implements EntityService {
 
+    Map<String, DatastoreEntity> datastore = new ConcurrentHashMap<>();
+
     LoadingCache<String, DatastoreEntity> entityCache = CacheBuilder.newBuilder()
             .maximumSize(100)
-            .expireAfterAccess(5, TimeUnit.MINUTES)
+            .expireAfterWrite(5, TimeUnit.MINUTES)
             .build(
                     new CacheLoader<String, DatastoreEntity>() {
                         @Override
                         public DatastoreEntity load(String id) throws Exception {
-                            return getEntity(id);
+                            return getEntityFromDataStore(id);
                         }
+
+
                     }
             );
 
+    private DatastoreEntity getEntityFromDataStore(String id) {
+        return datastore.get(id);
+    }
+
     @Override
     public void storeEntity(DatastoreEntity entity) {
+            datastore.put(entity.getId(), entity);
            entityCache.put(entity.getId(), entity);
     }
 

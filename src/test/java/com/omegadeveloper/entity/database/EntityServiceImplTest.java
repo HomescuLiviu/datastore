@@ -25,6 +25,34 @@ public class EntityServiceImplTest {
     }
 
     @Test
+    public void testStoreEntityFor10Minutes() throws Exception {
+        DatastoreEntity entity =  new DatastoreEntity();
+        entity.setId("1234");
+
+        entityService.storeEntity(entity);
+
+        Thread.sleep(10 * 60 * 1000);
+
+        DatastoreEntity storedEntity = entityService.getEntity("1234");
+
+        assertEquals("The stored entity does not mach the added entity", storedEntity, entity);
+    }
+
+    @Test
+    public void testCanNotStoreEntityFor11Minutes() throws Exception {
+        DatastoreEntity entity =  new DatastoreEntity();
+        entity.setId("1234");
+
+        entityService.storeEntity(entity);
+
+        Thread.sleep(11 * 60 * 1000);
+
+        DatastoreEntity storedEntity = entityService.getEntity("1234");
+
+        assertEquals("The stored entity does not mach the added entity", storedEntity, entity);
+    }
+
+    @Test
     public void testGetEntity() throws Exception {
 
     }
