@@ -26,8 +26,9 @@ repositories {
 }
 
 dependencies {
-    testCompile('org.mockito:mockito-all:1.8.4')
+    compile('org.mockito:mockito-all:1.8.4')
     testCompile('junit:junit:4.4')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
 }

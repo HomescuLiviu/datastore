@@ -1,13 +1,13 @@
 package com.omegadeveloper.entity.database;
 
 
-import javax.swing.text.html.parser.Entity;
+import com.omegadeveloper.entity.DatastoreEntity;
 
 public interface EntityService {
 
-    void storeEntity(Entity entity);
+    void storeEntity(DatastoreEntity entity);
 
-    Entity getEntity(String id);
+    DatastoreEntity getEntity(String id);
 
 
 }

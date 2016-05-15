@@ -57,5 +57,6 @@
     <orderEntry type="library" exported="" name="Gradle: org.unbescape:unbescape:1.1.0.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.thymeleaf:thymeleaf:2.1.4.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.codehaus.groovy:groovy:2.4.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:19.0" level="project" />
   </component>
 </module>
