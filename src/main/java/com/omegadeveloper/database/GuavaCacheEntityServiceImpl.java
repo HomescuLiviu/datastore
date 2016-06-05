@@ -15,7 +15,7 @@ public class GuavaCacheEntityServiceImpl implements EntityService {
 
     private static Map<String, DatastoreEntity> datastore = new ConcurrentHashMap<>();
 
-    private static LoadingCache<String, DatastoreEntity> entityCache = CacheBuilder.newBuilder()
+    private LoadingCache<String, DatastoreEntity> entityCache = CacheBuilder.newBuilder()
             .maximumSize(100)
             .expireAfterWrite(1, TimeUnit.MINUTES)
             .build(
@@ -26,7 +26,7 @@ public class GuavaCacheEntityServiceImpl implements EntityService {
                         }
                     }
             );
-    static {
+    {
         cacheCleaner.scheduleAtFixedRate( () -> entityCache.cleanUp(), 0, 2, TimeUnit.MINUTES );
     }
 
@@ -36,7 +36,14 @@ public class GuavaCacheEntityServiceImpl implements EntityService {
 
     @Override
     public void storeEntity(DatastoreEntity entity) {
-       datastore.put(entity.getId(), entity);
+       if (entity.getId() == null || entity.getId().isEmpty()){
+           throw new IllegalArgumentException("The stored entity must have an id");
+       }
+       if (entityCache.getIfPresent(entity.getId()) != null ){
+           throw new IllegalArgumentException("The entity with id: "+ entity.getId() + " already exists!");
+       }
+
+       datastore.putIfAbsent(entity.getId(), entity);
        entityCache.put(entity.getId(), entity);
 }
 

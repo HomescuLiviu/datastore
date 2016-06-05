@@ -1,6 +1,7 @@
 package com.omegadeveloper.database;
 
 import com.omegadeveloper.entity.DatastoreEntity;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +10,11 @@ import static org.junit.Assert.assertNull;
 public class GuavaCacheEntityServiceImplTest {
 
     GuavaCacheEntityServiceImpl entityService = new GuavaCacheEntityServiceImpl();
+
+    @Before
+    public void setup(){
+        entityService = new GuavaCacheEntityServiceImpl();
+    }
 
     @Test
     public void testStoreEntity() throws Exception {
@@ -66,5 +72,34 @@ public class GuavaCacheEntityServiceImplTest {
 
         entityService.removeEntity("1234");
         assertNull("The stored entity was not removed", entityService.getEntity("1234"));
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testThrowsExceptionWhenLoadingSameIdTwice() throws Exception {
+        DatastoreEntity firstEntity =  new DatastoreEntity();
+        firstEntity.setId("1234");
+
+        DatastoreEntity secondEntity =  new DatastoreEntity();
+        secondEntity.setId("1234");
+
+        entityService.storeEntity(firstEntity);
+        entityService.storeEntity(secondEntity);
+
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testThrowsExceptionWhenLoadingNullId() throws Exception {
+        DatastoreEntity entity =  new DatastoreEntity();
+        entity.setId(null);
+
+        entityService.storeEntity(entity);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testThrowsExceptionWhenLoadingEmptyId() throws Exception {
+        DatastoreEntity entity =  new DatastoreEntity();
+        entity.setId("");
+
+        entityService.storeEntity(entity);
     }
 }
